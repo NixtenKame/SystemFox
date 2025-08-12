@@ -1,6 +1,6 @@
 # FluffFox — Bare Minimum Source Code
 
-Welcome to the FluffFox repository! 🐾
+Welcome to the FluffFox repository!
 
 ## What’s inside?
 
@@ -23,4 +23,4 @@ Stay tuned for updates as FluffFox becomes more powerful and feature-rich!
 
 Thanks for checking it out! Feel free to contribute or follow along.  
 
-— Nixten leo Kame
+— Nixten Leo Kame
