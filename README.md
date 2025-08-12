@@ -10,6 +10,11 @@ This repo currently contains the **bare minimum** source code for the project, i
 
 Nothing too crazy or complex just yet — it’s a clean, simple starting point.
 
+## What db do I use?
+
+-The database I use is MySQL if you are wondering
+-(Bonus)The programming language I use for the site is PHP that is the front end
+
 ## What’s next?
 
 This project will **grow and evolve** over time with:  
