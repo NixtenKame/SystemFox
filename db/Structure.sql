@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `artshare` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `artshare`;
 -- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
 --
 -- Host: localhost    Database: artshare
@@ -56,7 +54,7 @@ CREATE TABLE `comment_likes` (
   `user_id` int NOT NULL,
   `action` enum('like','dislike') NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,8 +71,10 @@ CREATE TABLE `comments` (
   `comment` text NOT NULL,
   `parent_id` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  KEY `fk_comments_parent` (`parent_id`),
+  CONSTRAINT `fk_comments_parent` FOREIGN KEY (`parent_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +145,7 @@ CREATE TABLE `image_likes` (
   KEY `image_id` (`image_id`),
   CONSTRAINT `image_likes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `image_likes_ibfk_2` FOREIGN KEY (`image_id`) REFERENCES `uploads` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +178,7 @@ CREATE TABLE `news` (
   `author` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,7 +268,7 @@ CREATE TABLE `private_messages` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `edited` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,7 +286,7 @@ CREATE TABLE `remember_me` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `remember_me_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,6 +315,47 @@ CREATE TABLE `reports` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `tags`
+--
+
+DROP TABLE IF EXISTS `tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tags` (
+  `tag_id` int NOT NULL AUTO_INCREMENT,
+  `tag_name` varchar(100) NOT NULL,
+  `description` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `post_count` int NOT NULL DEFAULT '0',
+  `category` smallint NOT NULL DEFAULT '0',
+  `related_tags` text,
+  `related_tags_updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_locked` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`tag_id`),
+  UNIQUE KEY `unique_upload_tag` (`tag_name`),
+  UNIQUE KEY `unique_tag_name` (`tag_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `upload_tags`
+--
+
+DROP TABLE IF EXISTS `upload_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `upload_tags` (
+  `upload_id` int NOT NULL,
+  `tag_id` int NOT NULL,
+  PRIMARY KEY (`upload_id`,`tag_id`),
+  KEY `tag_id` (`tag_id`),
+  CONSTRAINT `upload_tags_ibfk_1` FOREIGN KEY (`upload_id`) REFERENCES `uploads` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `upload_tags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `uploads`
 --
 
@@ -326,11 +367,59 @@ CREATE TABLE `uploads` (
   `file_name` varchar(255) NOT NULL,
   `display_name` varchar(255) NOT NULL,
   `category` enum('sfw','nsfw') NOT NULL,
-  `tags` text,
   `uploaded_by` int NOT NULL,
   `upload_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `up_score` int NOT NULL DEFAULT '0',
+  `down_score` int NOT NULL DEFAULT '0',
+  `score` int NOT NULL DEFAULT '0',
+  `source` varchar(255) NOT NULL DEFAULT '',
+  `rating` char(1) NOT NULL DEFAULT 'q',
+  `is_note_locked` tinyint(1) NOT NULL DEFAULT '0',
+  `is_rating_locked` tinyint(1) NOT NULL DEFAULT '0',
+  `is_status_locked` tinyint(1) NOT NULL DEFAULT '0',
+  `is_pending` tinyint(1) NOT NULL DEFAULT '0',
+  `is_flagged` tinyint(1) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `uploader_ip_addr` varchar(45) NOT NULL DEFAULT '',
+  `approver_id` int DEFAULT NULL,
+  `fav_string` text NOT NULL,
+  `pool_string` text NOT NULL,
+  `last_noted_at` timestamp NULL DEFAULT NULL,
+  `last_comment_bumped_at` timestamp NULL DEFAULT NULL,
+  `fav_count` int NOT NULL DEFAULT '0',
+  `tag_string` text NOT NULL,
+  `tag_count` int NOT NULL DEFAULT '0',
+  `tag_count_general` int NOT NULL DEFAULT '0',
+  `tag_count_artist` int NOT NULL DEFAULT '0',
+  `tag_count_character` int NOT NULL DEFAULT '0',
+  `tag_count_copyright` int NOT NULL DEFAULT '0',
+  `file_ext` varchar(10) NOT NULL DEFAULT '',
+  `file_size` int NOT NULL DEFAULT '0',
+  `image_width` int NOT NULL DEFAULT '0',
+  `image_height` int NOT NULL DEFAULT '0',
+  `parent_id` int DEFAULT NULL,
+  `has_children` tinyint(1) NOT NULL DEFAULT '0',
+  `last_commented_at` timestamp NULL DEFAULT NULL,
+  `has_active_children` tinyint(1) NOT NULL DEFAULT '0',
+  `bit_flags` bigint NOT NULL DEFAULT '0',
+  `tag_count_meta` int NOT NULL DEFAULT '0',
+  `locked_tags` text,
+  `tag_count_species` int NOT NULL DEFAULT '0',
+  `tag_count_invalid` int NOT NULL DEFAULT '0',
+  `description` text NOT NULL,
+  `comment_count` int NOT NULL DEFAULT '0',
+  `change_seq` bigint NOT NULL DEFAULT '0',
+  `tag_count_lore` int NOT NULL DEFAULT '0',
+  `bg_color` varchar(20) DEFAULT NULL,
+  `duration` decimal(10,2) DEFAULT NULL,
+  `is_comment_disabled` tinyint(1) NOT NULL DEFAULT '0',
+  `is_comment_locked` tinyint(1) NOT NULL DEFAULT '0',
+  `tag_count_contributor` int NOT NULL DEFAULT '0',
+  `video_samples` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -345,7 +434,7 @@ CREATE TABLE `user_blacklist` (
   `user_id` int NOT NULL,
   `tag` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -364,6 +453,7 @@ CREATE TABLE `user_settings` (
   `notifications_enabled` tinyint DEFAULT '1',
   `custom_css` longtext,
   `wallpaper` varchar(50) DEFAULT 'light-wallpaper',
+  `custom_css_md5` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -401,10 +491,13 @@ CREATE TABLE `users` (
   `security_answer2` varchar(255) DEFAULT NULL,
   `email_visibility` tinyint(1) DEFAULT '1',
   `fcm_token` text,
+  `last_ip_addr` varchar(45) DEFAULT NULL,
+  `base_upload_limit` int NOT NULL DEFAULT '10',
+  `last_logged_in_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -422,7 +515,7 @@ CREATE TABLE `version_updates` (
   `notes` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -434,4 +527,4 @@ CREATE TABLE `version_updates` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-08 23:26:06
+-- Dump completed on 2025-08-12 14:13:18
