@@ -6,11 +6,10 @@ Disallow: /logs/
 Disallow: /uploads/
 Disallow: /public/uploads/
 Disallow: /private/
-Disallow: /Lucky Root Project site/
 Disallow: /settings/
 Disallow: /vendor/
 Disallow: /error/
 Disallow: /scripts/
 Disallow: /backup/
 Allow: /public/
-Sitemap: https://your-domain.example/sitemap.xml
+Sitemap: https://nixten.ddns.net/sitemap.xml
