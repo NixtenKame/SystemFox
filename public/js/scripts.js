@@ -1,9 +1,6 @@
 // Check that the script is loaded
 console.log("scripts.js loaded successfully!");
 
-<script src="https://kit.fontawesome.com/8d091fb1f3.js" crossorigin="anonymous"></script>
-
-
 // Toggle menu visibility
 function toggleMenu() {
     const nav = document.querySelector("nav");
@@ -16,29 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
         menuToggle.addEventListener("click", toggleMenu);
     }
 });
-
-// Check if cookie consent has been given
-if (!localStorage.getItem('cookieConsent')) {
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById('cookie-consent').style.display = 'flex';
-    });
-}
-
-// Function to accept cookies
-function acceptCookies() {
-    const consentData = {
-        essential: true, // Always accept essential cookies
-        analytics: true, // Example of accepting analytics cookies
-        marketing: false // Example of rejecting marketing cookies
-    };
-
-    // Store detailed consent information in localStorage
-    localStorage.setItem('cookieConsent', JSON.stringify(consentData)); // Store consent data as JSON
-    document.getElementById('cookie-consent').style.display = 'none'; // Hide the consent prompt
-
-    // You can also send this data to your server if needed, for example:
-    // fetch('/api/trackConsent', { method: 'POST', body: JSON.stringify(consentData), headers: { 'Content-Type': 'application/json' } });
-}
 
 function updateClock() {
     // Get the current time from the server's initial load

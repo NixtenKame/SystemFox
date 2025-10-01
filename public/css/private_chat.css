@@ -1,41 +1,128 @@
-#chat-box {
-    width: 100%;
-    height: 400px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    padding: 10px;
-    background: #f9f9f9;
+main {
+    margin-bottom: 5%;
 }
 
+.button {
+    background: purple;
+}
+
+/* Chat box */
+#chat-box {
+    flex: 1;
+    max-width: 100%;
+    height: 70vh;
+    background: #313338;
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: #555 #2b2d31;
+}
+#chat-box::-webkit-scrollbar {
+    width: 6px;
+}
+#chat-box::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+}
+
+/* Base chat message */
 .chat-message {
     margin-bottom: 8px;
-    padding: 5px;
-    border-radius: 5px;
+    padding: 10px 14px;
+    border-radius: 15px;
+    max-width: 70%;
+    word-wrap: break-word;
+    font-size: 15px;
+    line-height: 1.4;
+    position: relative;
+    background: #404249;
+    color: #fff;
 }
 
-.chat-message strong {
-    color: #007bff;
+/* Sender (you) */
+.chat-message.sender {
+    align-self: flex-end;
+    background: purple;
+    color: #fff;
+    text-align: right;
+}
+.chat-message.sender strong {
+    color: #e0e0ff;
 }
 
-.timestamp {
-    font-size: 0.8em;
-    color: gray;
+/* Receiver (other person) */
+.chat-message.receiver {
+    align-self: flex-start;
+    background: #404249;
+    color: #fff;
+    text-align: left;
+}
+.chat-message.receiver strong {
+    color: #d1d1d1;
 }
 
-.search-box {
-    width: 79%;
+/* Timestamp */
+.chat-message .timestamp {
+    font-size: 11px;
+    color: #aaa;
+    display: block;
+    margin-top: 4px;
+}
+
+/* Images inside messages */
+.chat-image {
+    max-width: 220px;
+    max-height: 220px;
+    border-radius: 8px;
+    margin-top: 6px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.chat-image:hover {
+    transform: scale(1.03);
+}
+
+/* Chat form */
+#chat-form {
+    bottom: 0;
+    display: flex;
+    gap: 10px;
+    background: #2b2d31;
+    padding: 12px;
+    border-top: 1px solid #444;
+    max-width: 100%;
+    margin: auto;
+    border-radius: 15px;
+}
+.text-chat-box {
+    flex: 1;
     padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: #404249;
+    color: #fff;
 }
+#image-input { display: none; }
 
+/* Alerts */
 .alert {
-    color: red;
+    text-align: center;
+    background: #ff4444;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px;
     font-weight: bold;
-    margin-bottom: 10px;
 }
 
+/* Online status */
 .status-indicator {
     width: 10px;
     height: 10px;
@@ -43,15 +130,10 @@
     display: inline-block;
     margin-left: 10px;
 }
+.online { background: green; }
+.offline { background: red; }
 
-.online {
-    background: green;
-}
-
-.offline {
-    background: red;
-}
-
+/* Image popup */
 #image-popup {
     display: none;
     position: fixed;
@@ -59,18 +141,16 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0,0,0,0.8);
     z-index: 1000;
     justify-content: center;
     align-items: center;
 }
-
 #image-popup img {
     max-width: 90%;
     max-height: 90%;
     border-radius: 10px;
 }
-
 #popup-close {
     position: absolute;
     top: 20px;
@@ -82,7 +162,58 @@
     cursor: pointer;
     border-radius: 5px;
 }
-
 #popup-close:hover {
     background: #ddd;
+}
+
+/* Report popup */
+#report-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 1999;
+}
+#report-popup {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #202225;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;
+    z-index: 2000;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+#report-popup h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-align: center;
+}
+#report-popup select,
+#report-popup textarea {
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: #404249;
+    color: #fff;
+    font-size: 14px;
+}
+#report-popup button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    background: purple;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
 }

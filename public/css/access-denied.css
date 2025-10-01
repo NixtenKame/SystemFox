@@ -1,0 +1,6 @@
+@media (min-width: 1275px) {    
+    .mobile-nav {
+        display: none; /* hidden on desktop */
+    }
+}
+

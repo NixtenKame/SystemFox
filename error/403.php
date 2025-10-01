@@ -1,65 +1,37 @@
+<?php
+define('ROOT_PATH', realpath(__DIR__ . '/../..'));
+
+include_once ROOT_PATH . '/connections/config.php';
+include_once('../includes/header.php');
+
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error 403 - Forbidden</title>
+    <script src="https://cdn.tiny.cloud/1/ps49nsqt16otrzd8qtk8mvmpp3s87geescqvseq15vwf0bqs/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>    
+    <script src="/public/js/scripts.js"></script>
+    <script src="https://kit.fontawesome.com/8d091fb1f3.js" crossorigin="Nixten Kame"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            color: #333;
-            text-align: center;
-            padding: 50px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
         h1 {
             font-size: 48px;
-            margin-bottom: 20px;
-            color: #d9534f;
+            margin-bottom: 10px;
+            color: #dc3545;
         }
+
         p {
             font-size: 18px;
             margin-bottom: 20px;
-            line-height: 1.6;
         }
-        a {
-            color: #007BFF;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+
         .icon {
             font-size: 100px;
-            color: #d9534f;
             margin-bottom: 20px;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 18px;
-            color: #fff;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .button:hover {
-            background-color: #0056b3;
-        }
-        .icon {
-            margin: auto;
+            color: #dc3545;
         }
     </style>
     <script>
@@ -104,14 +76,12 @@
                         <li>Contact the site administrator if you believe this is an error.</li>
                     </ul>
                 `;
-                errorIcon.innerHTML = "🌐";
             }
         });
     </script>
 </head>
 <body>
     <div class="container">
-        <div id="errorIcon" class="icon">🚫</div>
         <h1>Error 403</h1>
         <p>Forbidden - You don't have permission to access this page.</p>
         <div id="errorMessage">

@@ -1,5 +1,7 @@
 <?php
-include_once('../includes/config.php');
+define('ROOT_PATH', realpath(__DIR__ . '/../..'));
+
+include_once ROOT_PATH . '/connections/config.php';
 include_once('../includes/header.php'); // Include common header
 
 // Start the session if not already started
