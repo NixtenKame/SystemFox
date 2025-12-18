@@ -51,7 +51,6 @@ $currentTime = date('Y-m-d H:i:s');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
     <title>Error 404 - Page Not Found :3</title>
     <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
     <style>
@@ -84,9 +83,9 @@ $currentTime = date('Y-m-d H:i:s');
 <body>
 
     <nav>
-<?php include_once 'E:\yifffox\yiff-fox Root Project Directory/includes/nav.php'; ?>
+<?php include_once '../includes/nav.php'; ?>
     </nav>
-    <?php include_once 'E:\yifffox\yiff-fox Root Project Directory\includes\site-notice.php'; ?>
+    <?php include_once '../includes/site-notice.php'; ?>
 
     <div class="container">
     <img src="/public/images/favicon.ico" alt="Logo">

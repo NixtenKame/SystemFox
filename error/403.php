@@ -4,7 +4,7 @@ define('ROOT_PATH', realpath(__DIR__ . '/../..'));
 include_once ROOT_PATH . '/connections/config.php';
 include_once('../includes/header.php');
 
-session_start();
+
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error 403 - Forbidden</title>
     <script src="https://cdn.tiny.cloud/1/ps49nsqt16otrzd8qtk8mvmpp3s87geescqvseq15vwf0bqs/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>    
-    <script src="/public/js/scripts.js"></script>
+    
     <script src="https://kit.fontawesome.com/8d091fb1f3.js" crossorigin="Nixten Kame"></script>
     <style>
         h1 {

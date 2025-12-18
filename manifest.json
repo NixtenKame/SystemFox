@@ -1,1 +1,22 @@
-{"name":"FluffFox","icons":[{"src":"/android-chrome-192x192.png","sizes":"192x192","type":"image/png"},{"src":"/android-chrome-512x512.png","sizes":"512x512","type":"image/png"}],"theme_color":"#00549e","background_color":"#021131","display":"standalone"}
+{
+  "name": "FluffFox",
+  "short_name": "FluffFox",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#005999",
+  "description": "Furry art sharing site",
+  "display_override": ["standalone"],
+  "categories": ["webapp"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

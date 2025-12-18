@@ -1,0 +1,202 @@
+/* CSS code as seen below was copied from the styles.css on my website */
+
+* {
+  margin: 0;
+}
+
+body {
+  background: #444444;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+
+body::-webkit-scrollbar {
+  width: 15px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #444444;
+  border-radius: 0px;
+  border-left: 2px solid grey;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #1e1e1e;
+  border-radius: 0px;
+  border-left: 2px solid grey;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: grey;
+}
+
+body::-webkit-scrollbar-corner {
+  background: #eee;
+}
+
+nav {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  padding: 10px;
+  font-size: clamp(9px, 1vw + 0.5rem, 14px);
+}
+
+nav a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  margin: 0 15px;
+  cursor: default;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+nav a.active {
+  text-decoration: underline;
+  background-color: black;
+  font-weight: 900;
+}
+
+ul {
+  display: block;
+  list-style-type: disc;
+  unicode-bidi: isolate;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.index-h1, .language-h1, .history-h1, .database-h1 {
+  margin-top: 20px;
+  background-color: #1e1e1e;
+  text-align: center;
+  margin: 20px;
+  border-radius: 15px;
+  cursor: default;
+}
+
+p {
+  color: black;
+}
+
+h1 {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+footer {
+  background-color: #1e1e1e;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  height: 20px;
+}
+
+footer p {
+  color: white;
+  cursor: default;
+}
+
+#codeprojects_pagefooter {
+  display: none!important;
+}
+
+.widgit {
+  margin: 20px;
+  border-radius: 15px;
+  padding: 5px;
+  background-color: #1e1e1e;
+  color: white;
+  cursor: default;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.img-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  border-radius: 15px;
+  padding: 15px;
+  background-color: #1e1e1e;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.img-widget:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.img-widget img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+.img-widget p {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.widgit p {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .img-widget {
+    width: 90%;
+    margin: 10px 0;
+    padding: 10px;
+  }
+
+  .img-widget img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .img-widget p {
+    font-size: 0.9rem;
+  }
+}
+
+::selection {
+  background: grey;
+}
+
+::-moz-selection {
+  background: grey;
+}
+
+.widgit h2 {
+  text-align: center;
+}

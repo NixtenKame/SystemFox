@@ -1,0 +1,272 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* ---------------- PASSWORD STRENGTH COLORS (FINAL) ---------------- */
+/* ---------------- Password Strength Meter ---------------- */
+
+        /* Password strength meter */
+        .strength-meter {
+            height: 10px;
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .strength-meter div {
+            height: 100%;
+            border-radius: 5px;
+        }
+        .strength-weak { width: 25%; background-color: red; }
+        .strength-medium { width: 50%; background-color: orange; }
+        .strength-strong { width: 75%; background-color: yellow; }
+        .strength-very-strong { width: 100%; background-color: green; }
+
+
+/* ---------------- BACKGROUND ---------------- */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 0 10px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url("/public/images/wallpaper.png"), #000;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  filter: brightness(0.7);
+  z-index: -1;
+}
+
+/* ---------------- WRAPPER ---------------- */
+.wrapper {
+  width: 400px;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  z-index: 2;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-header p {
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* ---------------- FLOATING LABEL INPUTS ---------------- */
+.input-field {
+  position: relative;
+  border-bottom: 2px solid rgba(255,255,255,0.4);
+  margin: 15px 0 25px;
+}
+
+.input-field input,
+.input-field select {
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #fff;
+  padding-right: 25px;
+}
+
+.input-field select option {
+  color: #000;
+}
+
+.input-field label {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+.input-field input:focus ~ label,
+.input-field input:valid ~ label,
+.input-field select:focus ~ label,
+.input-field select:valid ~ label {
+  font-size: 0.8rem;
+  top: 8px;
+  transform: translateY(-120%);
+  opacity: 0.9;
+}
+
+/* ---------------- STANDARD INPUTS ---------------- */
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="text"].plain-input,
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 12px 0 5px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+}
+
+/* dropdown arrow */
+select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='18' width='18' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  padding-right: 30px;
+}
+
+/* ---------------- PASSWORD STRENGTH METER ---------------- */
+
+.error,
+#error {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+/* ---------------- CHECKBOXES ---------------- */
+label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #fff;
+}
+
+/* ---------------- BUTTONS ---------------- */
+button {
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 16px;
+  border: 2px solid transparent;
+  transition: 0.25s ease;
+  margin-top: 20px;
+}
+
+button:hover {
+  color: #fff;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ---------------- POPUP MESSAGE (FINAL VERSION) ---------------- */
+.message-popup {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.75);
+  padding: 20px;
+  border-radius: 8px;
+  color: #fff;
+  border-left: 5px solid #00ff99;
+  z-index: 9999;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.message-popup.error { border-left-color: #ff4d4d; }
+
+.popup-close-btn {
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #fff;
+}
+
+/* ---------------- MODAL (FINAL VERSION) ---------------- */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background: #1d1d1d;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #444;
+  width: 90%;
+  max-width: 350px;
+  border-radius: 8px;
+  text-align: center;
+  color: #fff;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+}
+
+.modal-buttons .cancel-btn {
+  background-color: #c62828;
+}
+
+.modal-buttons .proceed-btn {
+  background-color: #2e7d32;
+}
+
+/* ---------------- LOGIN LABEL FIX ---------------- */
+.login {
+  width: 30%;
+  margin-bottom: 2%;
+  text-align: left;
+}
+
+.mobile-nav {
+    display: none;
+}
