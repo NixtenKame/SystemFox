@@ -267,7 +267,7 @@ if (
         </div>
     </main>
     <footer>
-        <p>&copy; 2026 FluffFox. (nixten.ddns.net) All Rights Reserved. <a class="link" href="/assets/docs/version"><?php echo htmlspecialchars($latest_version); ?></a></p>
+        <p>&copy; 2026 <a href="https://github.com/NixtenKame/SystemFox/">FluffFox.</a> (nixten.ddns.net) All Rights Reserved. <a class="link" href="/assets/docs/version"><?php echo htmlspecialchars($latest_version); ?></a></p>
     </footer>
     <script>
     function openDeletePopup(id) {

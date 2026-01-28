@@ -179,7 +179,7 @@ date_default_timezone_set('America/Chicago');
 
     <?php include('includes/version.php'); ?>
     <footer>
-        <p>&copy; 2026 FluffFox. (nixten.ddns.net) All Rights Reserved. <?php echo htmlspecialchars($version); ?></p>
+        <p>&copy; 2026 <a href="https://github.com/NixtenKame/SystemFox/">FluffFox.</a> (nixten.ddns.net) All Rights Reserved. <?php echo htmlspecialchars($version); ?></p>
     </footer>
 </body>
 </html>

@@ -160,7 +160,7 @@ include_once('../../../includes/header.php');
     </div>
     <?php include('../../../includes/version.php'); ?>
     <footer>
-        <p>&copy; 2026 FluffFox. All Rights Reserved. 
+        <p>&copy; 2026 <a href="https://github.com/NixtenKame/SystemFox/">FluffFox.</a> All Rights Reserved. 
         <a href="/assets/docs/version"><?php echo htmlspecialchars($version); ?></a></p>
     </footer>
 

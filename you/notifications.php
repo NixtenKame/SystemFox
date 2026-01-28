@@ -128,7 +128,7 @@ $stmt->close();
 
 <?php include('../includes/version.php'); ?>
 <footer>
-<p>&copy; 2026 FluffFox. (nixten.ddns.net) All Rights Reserved. <a class="link" href="/assets/docs/version"><?= htmlspecialchars($version); ?></a></p>
+<p>&copy; 2026 <a href="https://github.com/NixtenKame/SystemFox/">FluffFox.</a> (nixten.ddns.net) All Rights Reserved. <a class="link" href="/assets/docs/version"><?= htmlspecialchars($version); ?></a></p>
 </footer>
 
 <script>
