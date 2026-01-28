@@ -1,0 +1,134 @@
+/* Rainbow shifting gradient */
+.rainbow {
+  font-weight: bold;
+  color: red;
+  animation: color-shift 6s linear infinite;
+}
+
+@keyframes color-shift {
+  0%   { color: #ff0000; }
+  14%  { color: #ff7f00; }
+  28%  { color: #ffff00; }
+  42%  { color: #00ff00; }
+  56%  { color: #0000ff; }
+  70%  { color: #4b0082; }
+  84%  { color: #8f00ff; }
+  100% { color: #ff0000; }
+}
+
+/* Fire glow */
+.fire {
+  color: #ff6a00;
+  text-shadow:
+    0 0 5px #ff3300,
+    0 0 10px #ff6600,
+    0 0 20px #ff9900,
+    0 0 40px #ffcc00;
+  animation: flicker 1s infinite alternate;
+}
+@keyframes flicker {
+  0% { opacity: 1; text-shadow: 0 0 5px #ff3300, 0 0 10px #ff6600; }
+  50% { opacity: 0.8; text-shadow: 0 0 20px #ff9900, 0 0 30px #ffcc00; }
+  100% { opacity: 1; text-shadow: 0 0 10px #ff6600, 0 0 20px #ff9900; }
+}
+
+/* Water shimmer */
+.water {
+  background: linear-gradient(90deg, #00f, #0ff, #00f);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: wave 4s linear infinite;
+}
+@keyframes wave {
+  to { background-position: 200% center; }
+}
+
+/* Neon glow */
+.neon {
+  color: #0ff;
+  text-shadow:
+    0 0 5px #0ff,
+    0 0 10px #0ff,
+    0 0 20px #0ff,
+    0 0 40px #0ff;
+  animation: neon-pulse 1.5s ease-in-out infinite alternate;
+}
+@keyframes neon-pulse {
+  from { text-shadow: 0 0 5px #0ff, 0 0 10px #0ff; }
+  to { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff; }
+}
+
+/* Galaxy effect */
+.galaxy {
+  background: linear-gradient(45deg, #ff6, #f0f, #0ff, #fff);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: galaxy-shift 10s ease infinite;
+}
+@keyframes galaxy-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glitchy cyberpunk */
+.glitch {
+  position: relative;
+  color: #fff;
+  font-weight: bold;
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+}
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 #f0f;
+  animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 #0ff;
+  animation: glitch-anim2 3s infinite linear alternate-reverse;
+}
+@keyframes glitch-anim {
+  0% { clip: rect(42px, 9999px, 44px, 0); }
+  50% { clip: rect(12px, 9999px, 90px, 0); }
+  100% { clip: rect(85px, 9999px, 140px, 0); }
+}
+@keyframes glitch-anim2 {
+  0% { clip: rect(12px, 9999px, 50px, 0); }
+  50% { clip: rect(85px, 9999px, 130px, 0); }
+  100% { clip: rect(42px, 9999px, 80px, 0); }
+}
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  50% { transform: skew(2deg); }
+  100% { transform: skew(-2deg); }
+}
+
+/* Sparkle */
+.sparkle {
+  color: #fff;
+  position: relative;
+}
+.sparkle::after {
+  content: "✦";
+  position: absolute;
+  animation: sparkle 2s infinite;
+  color: #ff0;
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5) translate(0, 0); }
+  50% { opacity: 1; transform: scale(1.5) translate(10px, -10px); }
+}

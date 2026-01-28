@@ -1,0 +1,666 @@
+/* Core tag / link styles */
+.tag-link {
+    padding: 4px 8px;
+    margin: 4px 2px;
+    display: block;
+    font-size: 14px;
+    text-decoration: none;
+    color: #008000;
+    background: transparent;
+    border-radius: 4px;
+}
+.tag-link:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.side-bar-link {
+    color: #0066cc!important;
+    text-decoration: none!important;
+    background: none!important;
+    border: none!important;
+    font-size: medium!important;
+    display: block!important;
+    text-align: left!important;
+}
+
+.side-bar-link:hover {
+    text-decoration: underline!important;
+    cursor: pointer;
+}
+
+/* Layout containers */
+.page-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+/* Sidebar */
+.sidebar {
+    flex: 0 0 300px!important;
+    max-width: 300px!important;
+    box-sizing: border-box!important;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+}
+
+.sidebar .sidebar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Main content column (image, description, comments) */
+.content-right {
+    flex: 1 1 auto;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* Image panel and toggle group */
+.image-panel {
+  margin-bottom: 16px;
+}
+
+.size-toggle-group {
+    display: flex;
+    gap: 8px;
+    min-width: 100%;
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+body.dark .size-toggle-group {
+  background-color: #111111;
+}
+
+.score-info {
+  gap: 0;
+  display: flex;
+  margin: 0;
+}
+
+.size-toggle-group .button {
+    min-width: fit-content;
+}
+
+/* View image container */
+.view-image-container {
+  display: contents;
+    text-align: start;
+    margin: 0px 0;
+    overflow: auto;
+}
+.view-image-container img {
+    display: inline-block;
+    height: auto;
+    max-width: 100%;
+    border-radius: 4px;
+    transition: transform .12s ease;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* 850px constrained view */
+.view-image-850 {
+    max-width: 850px !important;
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* full-size view (allow native resolution; may cause horizontal scroll) */
+.view-image-full {
+    max-width: none !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* Buttons and actions */
+.score:hover {
+    cursor: default;
+}
+
+.favorite-btn {
+  color: #d3b54d!important;
+}
+.favorite-btn:hover {
+  color: #fff!important;
+}
+.button,
+.favorite-btn,
+.comment-guides-button,
+.score,
+.post-comment.button {
+    background-color: #ffe6f2;
+    color: #cc0066;
+    padding: 8px 10px;
+    font-size: 17px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 700;
+    box-sizing: border-box;
+}
+
+.image-like-btn:hover {
+  color: #fff!important;
+}
+
+.image-dislike-btn:hover {
+  color: #fff!important;
+}
+
+.button:hover,
+.score:hover,
+.comment-guides-button:hover {
+    background-color: #ff99cc;
+    color: #fff;
+}
+
+/* Button groups and small controls */
+.button-row,
+.like-dislike-buttons,
+.actions form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+.button-row .button,
+.button-row button {
+    height: auto;
+    padding: 6px 8px;
+}
+
+.image-size-right-sidebar {
+    max-width: 100%;         /* avoid weird width expansions */
+    width: auto;             /* shrink to fit content */
+    display: flex;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--sidebar-bg-color);
+}
+
+body.dark .image-size-right-sidebar {
+    background-color: #1a1a1a;
+    color: #ddd;
+}
+/* Small helpers */
+.description-box em { color: #999; }
+
+.comment {
+    margin: 10px 0;
+    padding: 8px;
+    border-radius: 6px;
+    background: white;
+    color: black;
+    cursor: default;
+}
+.replies {
+    margin-left: 20px;
+    border-left: 2px solid #eee;
+    padding-left: 12px;
+}
+.comment-meta {
+    font-size: 12px;
+    color: #666;
+}
+.no-comments {
+    color: #777;
+    font-style: italic;
+}
+
+/* Specific semantic button colors (can be overridden) */
+.like-btn { background-color: #4CAF50 !important; color: #fff !important; }
+.dislike-btn { background-color: #e53935 !important; color: #fff !important; }
+.reply-btn { background-color: #1976d2 !important; color: #fff !important; }
+
+/* TinyMCE width fix */
+.tox.tox-tinymce { width: 100% !important; }
+
+.add-comment-form {
+    margin-bottom: 5%;
+}
+
+
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .size-toggle-group .button { flex: 1 1 100%; max-width: 100%; }
+    .tag-link { display: inline-block; font-size: 13px; margin: 2px 4px; padding: 4px 8px; }
+    .comment-guides-button { font-size: 13px; padding: 8px; }
+    .view-image-850 { max-width: 100% !important; }
+    .view-image-full { width: auto; }
+    .button-row { flex-direction: column; gap: 8px; }
+    .add-comment-form { margin-bottom: 30%; }
+}
+
+/* Accessibility / UX */
+.size-toggle-group .active {
+    box-shadow: 0 0 0 2px rgba(204,0,102,0.15) inset;
+    background-color: #ff99cc;
+    color: #fff;
+}
+.view-image-container img[style*="cursor:zoom-in"],
+.view-image-container img[style*="cursor:zoom-out"] {
+    touch-action: manipulation;
+}
+
+@media (max-width: 480px) {
+    .button-row {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .button-row button {
+        flex: 1;
+        max-width: 33%;   /* adjust based on how many buttons */
+    }
+}
+
+
+/* Medium-width devices (tablets & mobile, 768px and below) */
+@media (max-width: 768px) {
+
+    /* Main layout stacks vertically */
+    .page-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        padding: 14px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Sidebar becomes a full-width mobile card */
+    .sidebar {
+        flex: none;
+        width: 100%;
+        max-width: 100%;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* Sidebar content spacing */
+    .sidebar .sidebar-container {
+        gap: 10px;
+        font-size: 15px;
+    }
+
+    /* Main content properly shrinks on all phones */
+    .content-right {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0; /* IMPORTANT: prevents overflow on mobile */
+        background: transparent;
+        padding: 8px 0;
+    }
+
+    .image-size-right-sidebar {
+        max-width: 100% !important;
+    }
+
+    /* Image display */
+    .view-image-container img {
+        border-radius: 10px;
+        max-width: 100%;
+        height: auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .view-image-container img:hover {
+        box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    /* Buttons scale and wrap correctly */
+    .button,
+    .favorite-btn,
+    .comment-guides-button,
+    .post-comment.button {
+        font-size: 15px;
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .button-row,
+    .like-dislike-buttons,
+    .actions form {
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Tag style */
+    .tag-link {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50px;
+        font-size: 14px;
+        padding: 6px 12px;
+        color: #00b300;
+    }
+
+    .tag-link:hover {
+        color: #fff;
+    }
+
+    /* Comment containers */
+    .comment {
+        background: rgba(255,255,255,0.85);
+        color: #111;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        margin-bottom: 12px;
+    }
+
+    .replies {
+        margin-left: 10px;
+        border-left: 3px solid rgba(255, 192, 203, 0.6);
+        padding-left: 10px;
+    }
+
+    /* Size toggle layout */
+    .size-toggle-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .size-toggle-group .button {
+        flex: 1 1 48%;
+        min-width: 120px;
+        max-width: 48%;
+    }
+
+    /* Comment form */
+    .add-comment-form {
+        padding: 8px;
+        background: rgba(255,255,255,0.07);
+        border-radius: 8px;
+        margin-bottom: 25%;
+    }
+}
+
+
+/* Dropdown Container */
+.ptbr-etc {
+    position: relative;
+}
+
+/* Hidden dropdown menu (initially hidden) */
+.ptbr-etc-menu {
+  flex-flow: column;
+  gap: 0.25rem;
+  position: absolute;
+  right: 10px;
+  top: 2.4rem;
+  z-index: 1;
+  padding: 0.25rem;
+  margin-top: 0.5rem;
+  background: var(--color-section);
+  border-radius: 0.25rem;
+  background: #ffe6f2;
+}
+
+/* Dropdown Links */
+.ptbr-etc-menu a {
+  background-color: #ffe6f2;
+  color: #cc0066;
+  padding: 8px 10px;
+  font-size: 17px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  box-sizing: border-box;
+}
+
+.ptbr-etc-menu a:hover {
+  background: #ff99cc;
+  color: #fff;
+}
+
+/* Show dropdown when active */
+.ptbr-etc-menu.show {
+    display: block;
+    animation: slideIn 0.3s ease-out; /* Smooth animation for the dropdown */
+}
+
+
+/* Prevent dropdown from closing when clicking inside */
+.ptbr-etc-menu, .ptbr-etc-menu a {
+    pointer-events: auto;
+}
+
+/* Video Player */
+.video-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-inline: auto;
+  width: 90%;
+  max-width: 1000px;
+  background-color: #333;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: width ease-in-out 200ms;
+}
+
+/* add diff. w & h when having theater or full-screen class on video-container */
+.video-container.full-screen,
+.video-container.theater {
+  max-width: initial;
+  width: 100%;
+}
+.video-container.theater {
+  max-height: 85vh;
+}
+
+.video-container.full-screen {
+  max-height: 100vh;
+}
+
+.video-controls-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  opacity: 0;
+  color: white;
+  transition: opacity ease-in-out 150ms;
+}
+
+/* Overlay to make controls more visible */
+.video-controls-container::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  width: 100%;
+  aspect-ratio: 6 / 1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* if hovered/has paused class/tab on video-container show video-controls-container */
+.video-container:hover .video-controls-container,
+.video-container:focus-within .video-controls-container,
+.video-container.paused .video-controls-container {
+  opacity: 1;
+}
+
+.video-controls-container .controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.25rem;
+}
+
+/* remove default styles of btns and add hard coded h & w for svg aspect ratio */
+.video-controls-container .controls button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+  height: 25px;
+  width: 30px;
+  font-size: 1.1rem;
+  opacity: 0.65;
+  transition: opacity ease-in-out 150ms;
+}
+
+.video-controls-container .controls button:hover {
+  opacity: 1;
+}
+
+/* Toggle icon based on a class's presence*/
+
+.video-container.paused .pause-icon {
+  display: none;
+}
+
+.video-container:not(.paused) .play-icon {
+  display: none;
+}
+.video-container.theater .enter-theater-icon {
+  display: none;
+}
+
+.video-container:not(.theater) .exit-theater-icon {
+  display: none;
+}
+.video-container.full-screen .enter-full-icon {
+  display: none;
+}
+
+.video-container:not(.full-screen) .exit-full-icon {
+  display: none;
+}
+
+/* conditionally show or hide volume level icons based-on data attr. injected on video-container section */
+.volume-high-icon,
+.volume-low-icon,
+.volume-mute-icon {
+  display: none;
+}
+
+.video-container[data-volume-level="high"] .volume-high-icon {
+  display: block;
+}
+.video-container[data-volume-level="low"] .volume-low-icon {
+  display: block;
+}
+.video-container[data-volume-level="mute"] .volume-mute-icon {
+  display: block;
+}
+
+.volume-container {
+  display: flex;
+  align-items: center;
+}
+/* hide and show volume slider with a delay and transition same as youtube video player */
+.volume-slider {
+  width: 0;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: width ease-in-out 150ms, transform ease-in-out 150ms;
+}
+
+/* if volume-container is hovered && slider is focused by TAB apply below styles */
+.volume-container:hover .volume-slider,
+.volume-slider:focus-within {
+  width: 5rem;
+  height: 0.3rem;
+  transform: scaleX(1);
+}
+
+.duration-container {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-grow: 1;
+}
+
+/* adding a hardcoded spacing for speed btn */
+.video-controls-container .controls button.wide-space {
+  width: 50px;
+}
+
+/* using the in-built range input as slider for forward and backward video moments */
+.timeline-container {
+  padding: 0 0.5rem;
+  position: absolute;
+  width: 100%;
+  bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-slider {
+  flex-grow: 1;
+  height: 0.25rem;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .title {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  .video-container {
+    border-radius: 0.2rem;
+  }
+  .video-controls-container .controls {
+    gap: 0.5rem;
+    padding: 0.2rem;
+  }
+  .video-controls-container .controls button {
+    font-size: 1rem;
+  }
+  .volume-container:hover .volume-slider,
+  .volume-slider:focus-within {
+    width: 3.2rem;
+    height: 0.3rem;
+  }
+  .duration-container {
+    gap: 0.1rem;
+    font-size: 0.8rem;
+  }
+  .video-controls-container .controls button.wide-space {
+    width: 2rem;
+  }
+}

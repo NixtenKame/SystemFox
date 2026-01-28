@@ -1,8 +1,4 @@
 User-agent: *
-Disallow: /*
-Disallow: /posts/*
-Allow: /public/
-Allow: /index
-Allow: /posts/
-Allow: /mobile/
+Disallow:
+
 Sitemap: https://nixten.ddns.net/sitemap.xml

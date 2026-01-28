@@ -30,6 +30,18 @@ main {
     background: #555;
     border-radius: 10px;
 }
+.chat-layout {
+    display: flex;
+    height: 100vh;
+}
+
+.chat-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    min-width: 0;
+}
 
 /* Base chat message */
 .chat-message {
@@ -96,7 +108,7 @@ main {
     background: #2b2d31;
     padding: 12px;
     border-top: 1px solid #444;
-    max-width: 100%;
+    min-width: 100%;
     margin: auto;
     border-radius: 15px;
 }
@@ -216,4 +228,70 @@ main {
     border: none;
     cursor: pointer;
     margin-bottom: 10px;
+}
+.chat-actions {
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+    margin-top: 6px;
+}
+
+.chat-actions-btn {
+    background: none;
+    border: none;
+    color: #b5bac1;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.chat-actions-menu {
+    position: absolute;
+    right: 0;
+    top: 28px;
+    background: #1e1f22;
+    border-radius: 8px;
+    padding: 6px 0;
+    width: 200px;
+    display: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    z-index: 50;
+}
+
+.chat-actions-menu.show {
+    display: block;
+}
+
+.menu-item {
+    width: 100%;
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    color: #dbdee1;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.menu-item:hover {
+    background: #35373c;
+}
+
+.menu-item.danger {
+    color: #f23f42;
+}
+
+.menu-item.success {
+    color: #23a55a;
+    cursor: default;
+}
+
+.menu-item.disabled {
+    color: #80848e;
+    cursor: default;
+}
+
+.chat-actions-menu hr {
+    border: none;
+    border-top: 1px solid #2b2d31;
+    margin: 6px 0;
 }
