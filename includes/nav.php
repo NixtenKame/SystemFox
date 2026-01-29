@@ -43,6 +43,8 @@
             <a href="/assets/docs/content_moderation"><i class="fa-solid fa-gavel"></i> Content Moderation</a>
             <a href="/assets/docs/dmca_policy"><i class="fa-solid fa-copyright"></i> DMCA Policy</a>
             <a href="/assets/docs/version"><i class="fa-solid fa-code-branch"></i> Site Version</a>
+            <a href="/static/docs/gore/"><i class="fa-solid fa-heart-pulse"></i> Gore Content Guidelines</a>
+            <a href="/static/docs/underwear-content/"><i class="fa-solid fa-briefcase"></i> Underwear Content Guidelines</a>
             <a href="/static/docs/news/"><i class="fa-solid fa-newspaper"></i> Site News</a>
             <a href="/forums/forum"><i class="fa-solid fa-comments"></i> Forums</a>
             <a href="/assets/docs/FluffFox"><i class="fa-solid fa-paw"></i>About FluffFox</a>
