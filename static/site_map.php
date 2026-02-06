@@ -65,7 +65,7 @@ include_once('../includes/header.php');
                 <ul>
                     <li><a href="/static/docs/news/">News Updates</a></li>
                     <li><a href="/static/docs/mascots/">Mascots</a></li>
-                    <li><a href="">Source Code (Comming Soon!)</a></li>
+                    <li><a href="https://github.com/NixtenKame/SystemFox/">Source Code</a></li>
                     <li><a href="/static/keyboard_shortcuts">Keyboard Shortcuts (Comming Soon!)</a></li>
                     <li><a href="">API documentatioin (Comming Soon!)</a></li>
                     <li><a href="">Stats (Comming Soon!)</a></li>

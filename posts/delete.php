@@ -190,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             <h3>File Information (Debug):</h3>
             <p><strong>Database file_name:</strong></p>
             <div class="file-path"><?php echo htmlspecialchars($image['file_name']); ?></div>
-            
+
             <p><strong>Full file path that will be deleted:</strong></p>
             <div class="file-path"><?php echo htmlspecialchars($filePathForDeletion); ?></div>
             
@@ -207,6 +207,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <form method="POST" action="/posts/delete?id=<?php echo htmlspecialchars($imageId); ?>" style="display:inline;">
                     <?php if (function_exists('csrf_input')) echo csrf_input(); ?>
                     <input type="hidden" name="id" value="<?php echo htmlspecialchars($imageId); ?>">
+                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($imageId); ?>">
+                    <textarea name="deletion_reason" rows="4" cols="50" placeholder="Optional: Provide a reason for deletion..."></textarea>
                     <input type="hidden" name="confirm" value="1">
                     <button type="submit" class="btn-delete">Yes, Delete Post</button>
                 </form>
@@ -241,6 +243,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $updateStmt2 = $db->prepare("UPDATE post_count SET total_posts = total_posts -1 WHERE id = 1");
 $updateStmt2->execute();
 $updateStmt2->close();
+
+// Update dystroyed posts table
+$updateStmt4 = $db->prepare("INSERT INTO destroyed_posts (post_id, destroyer_id, md5, destroyer_ip_addr, post_data, reason, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())");
+$deletionReason = $_POST['reason'] ?? '';
+$md5 = md5($image['file_name'] ?? uniqid('', true));
+$postData = json_encode($image);
+$updateStmt4->bind_param('iissss', $imageId, $userId, $md5, $_SERVER['REMOTE_ADDR'], $postData, $deletionReason);
+$updateStmt4->execute();
+$updateStmt4->close();
 
 // Soft-delete: mark is_deleted = 1
 $updateStmt = $db->prepare("UPDATE uploads SET is_deleted = 1 WHERE id = ?");

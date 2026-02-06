@@ -1,16 +1,5 @@
 <?php
 ob_start(); // start output buffering
-$requestUri = $_SERVER['REQUEST_URI'];
-$path = parse_url($requestUri, PHP_URL_PATH);
-
-// Extract username from path (either /user/username, /users/username or /username)
-if (preg_match('#^/users?/([^/]+)$#', $path, $matches)) {
-    $usernameFromPath = $matches[1];
-} elseif (preg_match('#^/([^/]+)$#', $path, $matches)) {
-    $usernameFromPath = $matches[1];
-} else {
-    $usernameFromPath = $_GET['user'] ?? null;
-}
 
 if (!$usernameFromPath) {
     http_response_code(404);
@@ -37,14 +26,6 @@ $usernameWithSpaces = str_replace('_', ' ', $decodedUsername);
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
-
-// Reserved names check
-$reservedNames = [
-    '.gitignore', 'bingsiteauth.xml', 'composer.json', 'composer.lock', 'error_redirect', 'favicon.ico', 'favicon',
-    'google000728f721d3ed82', 'index', 'login', 'popular_uploads', 'random_image',
-    'register', 'robots.txt', 'save_token', 'search',
-    'spotify-callback', 'save_push'
-];
 
 if (in_array(strtolower($usernameUnderscore), array_map('strtolower', $reservedNames))) {
     http_response_code(404);
