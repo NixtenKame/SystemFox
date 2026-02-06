@@ -9,7 +9,7 @@ if ($latestNews):
     $news_date = date("F j, Y", strtotime($latestNews['created_at']));
 ?>
 
-<script src="https://nixten.ddns.net:3001/js/v<?php echo $version; ?>/site-notice.js"></script>
+<script src="https://nixten.ddns.net:3001/js/site-notice.js"></script>
 <div class="ui-state-highlight site-notice" id="news" data-id="<?= $news_id ?>" style="display: none;">
   <a href="#" role="button" id="news-dismiss" title="Dismiss">
     <i class="fas fa-times"></i>

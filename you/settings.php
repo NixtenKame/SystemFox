@@ -307,6 +307,7 @@ include_once('../includes/header.php');
             <option value="progress" <?php if (($settings['icon'] ?? '') == 'progress') echo 'selected'; ?>>Progress Pride Flag</option>
             <option value="pride" <?php if (($settings['icon'] ?? '') == 'pride') echo 'selected'; ?>>Pride</option>
             <option value="trans" <?php if (($settings['icon'] ?? '') == 'trans') echo 'selected'; ?>>Transgender</option>
+            <option value="bhm" <?php if (($settings['icon'] ?? '') == 'bhm') echo 'selected'; ?>>Black History Month</option>
             <option value="none" <?php if (($settings['icon'] ?? '') == 'none') echo 'selected'; ?>>None</option>
         </select>
 

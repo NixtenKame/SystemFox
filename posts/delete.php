@@ -4,62 +4,55 @@ include_once ROOT_PATH . '/connections/config.php';
 
 ini_set('display_errors', 1);
 ini_set('log_errors', 1);
-ini_set('error_log', __DIR__.'/../../logs/posts/upload_errors.log');
+ini_set('error_log', __DIR__ . '/../../logs/posts/upload_errors.log');
 error_reporting(E_ALL);
 
-// Check if user is logged in
+// Auth check
 if (!isset($_SESSION['user_id'])) {
-    header("Location: /login.php"); // Redirect to login if not logged in
+    header("Location: /login.php");
     exit;
 }
 
+// Validate ID
 $imageIdRaw = $_GET['id'] ?? $_POST['id'] ?? null;
-if (empty($imageIdRaw) || !is_numeric($imageIdRaw)) {
+if (!$imageIdRaw || !is_numeric($imageIdRaw)) {
     die("<h2 style='color:red'>Invalid post ID.</h2>");
 }
 
-$imageId = intval($imageIdRaw);
-$userId = $_SESSION['user_id'];
+$imageId  = (int)$imageIdRaw;
+$userId   = $_SESSION['user_id'];
 $userRole = $_SESSION['user_role'] ?? '';
 
-// CSRF check only for POST requests
+// CSRF
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && function_exists('csrf_check') && !csrf_check()) {
-    die("<h2 style='color:red'>CSRF validation failed. Cannot delete post.</h2>");
+    die("<h2 style='color:red'>CSRF validation failed.</h2>");
 }
 
-// Permission check function
-function canDeleteImage($image, $currentUserId, $currentUserRole) {
-    return $image['uploaded_by'] == $currentUserId || in_array($currentUserRole, ['admin', 'moderator']);
+// Permissions
+function canDeleteImage($image, $uid, $role) {
+    return $image['uploaded_by'] == $uid || in_array($role, ['admin', 'moderator'], true);
 }
 
-/**
- * Delete physical file from storage
- * @param string $fileName - File name from database (e.g., "/69/1e/691e748778d11797630153c.png")
- * @return bool - True if deleted successfully, false otherwise
- */
+// Delete physical file
 function deleteImageFromStorage($fileName) {
-    // Database stores file_name like "/69/1e/691e748778d11797630153c.png"
-    // Construct full path: "S:/FluffFox-Data/data" + "/69/1e/691e748778d11797630153c.png" = "S:/FluffFox-Data/data/69/1e/691e748778d11797630153c.png"
-    $filePath = "S:/FluffFox-Data/data/" . $fileName;
-    
-    // Ensure the path is properly formatted (handle any double slashes)
+    $filePath = "S:/FluffFox-Data/data/" . ltrim($fileName, '/');
     $filePath = str_replace('//', '/', $filePath);
-    
-    if (file_exists($filePath)) {
-        if (unlink($filePath)) {
-            error_log("Successfully deleted file: $filePath");
-            return true;
-        } else {
-            error_log("Failed to delete file: $filePath (unlink failed)");
-            return false;
-        }
-    } else {
-        error_log("File does not exist: $filePath");
+
+    if (!file_exists($filePath)) {
+        error_log("File not found: $filePath");
         return false;
     }
+
+    if (unlink($filePath)) {
+        error_log("Deleted file: $filePath");
+        return true;
+    }
+
+    error_log("Failed to delete file: $filePath");
+    return false;
 }
 
-// Fetch image from DB (including is_deleted)
+// Fetch post
 $stmt = $db->prepare("SELECT id, uploaded_by, file_name, is_deleted FROM uploads WHERE id = ? LIMIT 1");
 $stmt->bind_param("i", $imageId);
 $stmt->execute();
@@ -70,210 +63,220 @@ if ($result->num_rows === 0) {
 }
 
 $image = $result->fetch_assoc();
-
-// Check if image is already deleted
-if (!empty($image['is_deleted']) && $image['is_deleted'] == 1) {
-    echo "<div style='border:1px solid red;padding:20px;margin:50px auto;width:400px;text-align:center;font-family:sans-serif;'>
-            <h2 style='color:red'>Image Already Deleted</h2>
-            <p>This post has already been deleted and no actions can be performed on it.</p>
-            <a href='/posts/' style='text-decoration:none;color:blue;'>Back to posts</a>
-          </div>";
-    exit;
-}
-
 $stmt->close();
 
-
-// Only allow deletion if the user is the uploader or admin/mod
-if (!canDeleteImage($image, $userId, $userRole)) {
-    echo "<div style='border:1px solid red;padding:20px;margin:50px auto;width:400px;text-align:center;font-family:sans-serif;'>
-            <h2 style='color:red'>Permission Denied</h2>
-            <p>You are not the original uploader or an Admin/Moderator.</p>
-            <a href='/posts/' style='text-decoration:none;color:blue;'>Back to posts</a>
-          </div>";
+// Already deleted
+if ((int)$image['is_deleted'] === 1) {
+    echo "<h2 style='color:red;text-align:center'>Post already deleted.</h2>";
     exit;
 }
 
-// Calculate the file path that would be deleted (for confirmation display)
+// Permission check
+if (!canDeleteImage($image, $userId, $userRole)) {
+    die("<h2 style='color:red'>Permission denied.</h2>");
+}
+
+// File info
 $filePathForDeletion = "S:/FluffFox-Data/data" . $image['file_name'];
 $filePathForDeletion = str_replace('//', '/', $filePathForDeletion);
 $fileExists = file_exists($filePathForDeletion);
 
-// If GET request, show confirmation page with file path
+/* ===========================
+   CONFIRMATION PAGE (GET)
+=========================== */
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Confirm Delete - Post #<?php echo htmlspecialchars($imageId); ?></title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                max-width: 600px;
-                margin: 50px auto;
-                padding: 20px;
-                background: #f5f5f5;
-            }
-            .confirmation-box {
-                background: white;
-                border: 2px solid #d32f2f;
-                border-radius: 8px;
-                padding: 30px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            }
-            h2 {
-                color: #d32f2f;
-                margin-top: 0;
-            }
-            .file-path {
-                background: #f5f5f5;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                padding: 15px;
-                margin: 20px 0;
-                font-family: 'Courier New', monospace;
-                word-break: break-all;
-                font-size: 14px;
-            }
-            .file-status {
-                padding: 10px;
-                border-radius: 4px;
-                margin: 10px 0;
-            }
-            .file-exists {
-                background: #c8e6c9;
-                color: #2e7d32;
-                border: 1px solid #4caf50;
-            }
-            .file-not-found {
-                background: #ffecb3;
-                color: #f57c00;
-                border: 1px solid #ffc107;
-            }
-            .button-group {
-                margin-top: 30px;
-                display: flex;
-                gap: 10px;
-            }
-            button, a.button {
-                padding: 12px 24px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-            }
-            .btn-delete {
-                background: #d32f2f;
-                color: white;
-            }
-            .btn-delete:hover {
-                background: #b71c1c;
-            }
-            .btn-cancel {
-                background: #757575;
-                color: white;
-            }
-            .btn-cancel:hover {
-                background: #616161;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="confirmation-box">
-            <h2>⚠️ Confirm Delete Post #<?php echo htmlspecialchars($imageId); ?></h2>
-            <p><strong>Are you sure you want to delete this post?</strong></p>
-            
-            <h3>File Information (Debug):</h3>
-            <p><strong>Database file_name:</strong></p>
-            <div class="file-path"><?php echo htmlspecialchars($image['file_name']); ?></div>
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Confirm Delete #<?= htmlspecialchars($imageId) ?></title>
+<style>
+ body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f5f5f5;
+    }
+    .confirmation-box {
+        background: white;
+        border: 2px solid #d32f2f;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h2 {
+        color: #d32f2f;
+        margin-top: 0;
+    }
+    .file-path {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin: 20px 0;
+        font-family: 'Courier New', monospace;
+        word-break: break-all;
+        font-size: 14px;
+    }
+    .file-status {
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+    }
+    .file-exists {
+        background: #c8e6c9;
+        color: #2e7d32;
+        border: 1px solid #4caf50;
+    }
+    .file-not-found {
+        background: #ffecb3;
+        color: #f57c00;
+        border: 1px solid #ffc107;
+    }
+    .button-group {
+        margin-top: 30px;
+        display: flex;
+        gap: 10px;
+    }
+    button, a.button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    .btn-delete {
+        background: #d32f2f;
+        color: white;
+    }
+    .btn-delete:hover {
+        background: #b71c1c;
+    }
+    .btn-cancel {
+        background: #757575;
+        color: white;
+    }
+    .btn-cancel:hover {
+        background: #616161;
+    }
+    </style>
+</head>
+<body>
+    <div class="confirmation-box">
+<h2>Confirm Delete Post #<?= htmlspecialchars($imageId) ?></h2>
 
-            <p><strong>Full file path that will be deleted:</strong></p>
-            <div class="file-path"><?php echo htmlspecialchars($filePathForDeletion); ?></div>
-            
-            <div class="file-status <?php echo $fileExists ? 'file-exists' : 'file-not-found'; ?>">
-                <strong>File Status:</strong> <?php echo $fileExists ? '✓ File exists on disk' : '⚠ File not found on disk (may have been deleted already)'; ?>
-            </div>
-            
-            <p style="color: #d32f2f; font-size: 14px; margin-top: 20px; font-weight: bold;">
-                <em>⚠️ Warning: This will permanently delete the post from the database AND the physical file from disk.<br>
-                This action cannot be undone!</em>
-            </p>
-            
-            <div class="button-group">
-                <form method="POST" action="/posts/delete?id=<?php echo htmlspecialchars($imageId); ?>" style="display:inline;">
-                    <?php if (function_exists('csrf_input')) echo csrf_input(); ?>
-                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($imageId); ?>">
-                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($imageId); ?>">
-                    <textarea name="deletion_reason" rows="4" cols="50" placeholder="Optional: Provide a reason for deletion..."></textarea>
-                    <input type="hidden" name="confirm" value="1">
-                    <button type="submit" class="btn-delete">Yes, Delete Post</button>
-                </form>
-                <a href="/posts/<?php echo htmlspecialchars($imageId); ?>/" class="button btn-cancel">Cancel</a>
-            </div>
-        </div>
-    </body>
-    </html>
-    <?php
-    exit;
+<p><strong>File:</strong></p>
+<pre><?= htmlspecialchars($image['file_name']) ?></pre>
+
+<p>Status: <?= $fileExists ? 'Exists' : 'Missing' ?></p>
+
+<form method="POST" action="/posts/delete?id=<?= htmlspecialchars($imageId) ?>">
+    <?php if (function_exists('csrf_input')) echo csrf_input(); ?>
+    <input type="hidden" name="id" value="<?= htmlspecialchars($imageId) ?>">
+    <textarea name="deletion_reason" rows="4" cols="50"
+        placeholder="Optional: reason for deletion"></textarea><br><br>
+    <input type="hidden" name="confirm" value="1">
+    <button type="submit">Delete Post</button>
+</form>
+
+<a href="/posts/<?= htmlspecialchars($imageId) ?>/">Cancel</a>
+</div>
+</body>
+</html>
+<?php
+exit;
 }
 
-// If POST request with confirmation, proceed with deletion
+/* ===========================
+   DELETE LOGIC (POST)
+=========================== */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check for confirmation
+
     if (!isset($_POST['confirm']) || $_POST['confirm'] !== '1') {
-        die("<h2 style='color:red'>Deletion not confirmed. Please use the confirmation page.</h2>");
+        die("<h2 style='color:red'>Deletion not confirmed.</h2>");
     }
-    
-    // First, try to delete the physical file
+
+    // Delete physical file
     $fileDeleted = false;
     $fileDeleteError = null;
+
     if (!empty($image['file_name'])) {
         $fileDeleted = deleteImageFromStorage($image['file_name']);
         if (!$fileDeleted) {
-            $fileDeleteError = "Warning: Physical file deletion failed or file not found. Database record will still be marked as deleted.";
-            error_log("Post #$imageId: $fileDeleteError - Path: $filePathForDeletion");
+            $fileDeleteError = "Physical file missing or failed to delete.";
         }
-}
+    }
 
-// Update post count: post_count = -1
-$updateStmt2 = $db->prepare("UPDATE post_count SET total_posts = total_posts -1 WHERE id = 1");
-$updateStmt2->execute();
-$updateStmt2->close();
+    // Extract MD5 from filename
+    $fileName = $image['file_name'] ?? '';
+    $md5 = 'unknown';
 
-// Update dystroyed posts table
-$updateStmt4 = $db->prepare("INSERT INTO destroyed_posts (post_id, destroyer_id, md5, destroyer_ip_addr, post_data, reason, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())");
-$deletionReason = $_POST['reason'] ?? '';
-$md5 = md5($image['file_name'] ?? uniqid('', true));
-$postData = json_encode($image);
-$updateStmt4->bind_param('iissss', $imageId, $userId, $md5, $_SERVER['REMOTE_ADDR'], $postData, $deletionReason);
-$updateStmt4->execute();
-$updateStmt4->close();
+    if ($fileName) {
+        $base = basename($fileName);
+        $md5Candidate = pathinfo($base, PATHINFO_FILENAME);
 
-// Soft-delete: mark is_deleted = 1
-$updateStmt = $db->prepare("UPDATE uploads SET is_deleted = 1 WHERE id = ?");
-$updateStmt->bind_param('i', $imageId);
+        if (preg_match('/^[a-f0-9]{32}$/i', $md5Candidate)) {
+            $md5 = $md5Candidate;
+        }
+    }
 
-if ($updateStmt->execute()) {
-    $updateStmt->close();
-        
-        // Log the deletion with file path for debugging
-        $logMessage = "Post #$imageId deleted. File path: $filePathForDeletion (File deleted: " . ($fileDeleted ? 'Yes' : 'No') . ")";
-        error_log($logMessage);
-        
-        // If there was a file deletion error, show it but still redirect
+    // Reason
+    $deletionReason = trim($_POST['deletion_reason'] ?? '');
+    $deletionReason = mb_substr($deletionReason, 0, 500);
+
+    // Insert uploaders ID into deleted_posts table from posts table
+    $stmt = $db->prepare("SELECT uploaded_by FROM uploads WHERE id = ?");
+    $stmt->bind_param('i', $imageId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $uploaderId = $row['uploaded_by'];
+    } else {
+        $uploaderId = 0;
+    }
+    $stmt->close();
+
+    // Insert destroyed record
+    $postData = json_encode($image);
+
+    $stmt = $db->prepare("
+        INSERT INTO destroyed_posts
+            (post_id, destroyer_id, md5, destroyer_ip_addr, post_data, reason, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
+    ");
+
+    $stmt->bind_param(
+        'iissss',
+        $imageId,
+        $userId,
+        $md5,
+        $_SERVER['REMOTE_ADDR'],
+        $postData,
+        $deletionReason
+    );
+    $stmt->execute();
+    $stmt->close();
+
+    // Update post count
+    $db->query("UPDATE post_count SET total_posts = total_posts - 1 WHERE id = 1");
+
+    // Soft delete
+    $stmt = $db->prepare("UPDATE uploads SET is_deleted = 1 WHERE id = ?");
+    $stmt->bind_param('i', $imageId);
+
+    if ($stmt->execute()) {
+        $stmt->close();
         if ($fileDeleteError) {
             $_SESSION['delete_warning'] = $fileDeleteError;
         }
-        
-    header("Location: /posts/"); // Redirect back to posts page
-    exit;
-} else {
-    $updateStmt->close();
-    die("<h2 style='color:red'>Failed to delete post. Please try again later.</h2>");
+        header("Location: /posts/");
+        exit;
     }
+
+    $stmt->close();
+    die("<h2 style='color:red'>Failed to delete post.</h2>");
 }
-?>

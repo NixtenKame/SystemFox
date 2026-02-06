@@ -770,7 +770,7 @@ if (!empty($imageTags)) {
     </main>
     <?php include('../includes/version.php'); ?>
     <footer>
-        <p>&copy; 2025 FluffFox. All Rights Reserved.
+        <p>&copy; 2026 FluffFox. All Rights Reserved.
         <a class="link" href="/assets/docs/version"><?php echo htmlspecialchars($version); ?></a></p>
     </footer>
 <script src="https://cdn.tiny.cloud/1/ps49nsqt16otrzd8qtk8mvmpp3s87geescqvseq15vwf0bqs/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>

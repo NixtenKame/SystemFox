@@ -2,38 +2,57 @@
 define('ROOT_PATH', realpath(__DIR__ . '/..'));
 
 include_once ROOT_PATH . '/connections/config.php';
-include('includes/header.php');
+include_once 'includes/header.php';
 
+/* -----------------------------
+   Load all users into a lookup
+------------------------------*/
+$usernames = [];
+
+$stmtUsers = $db->prepare("SELECT id, username FROM users");
+$stmtUsers->execute();
+$resultUsers = $stmtUsers->get_result();
+
+while ($row = $resultUsers->fetch_assoc()) {
+    $usernames[(int)$row['id']] = $row['username'];
+}
+$stmtUsers->close();
+
+/* -----------------------------
+   Fetch deleted posts
+------------------------------*/
 $deleted_posts = [];
 
-$sql = "
+$sqlDeleted = "
     SELECT
-        id,
-        display_name,
-        category,
-        uploaded_by,
-        upload_date,
-        tag_string,
-        tag_count
-    FROM uploads
-    WHERE is_deleted = 1
-    ORDER BY upload_date DESC
+        dp.post_id,
+        dp.created_at AS deleted_at,
+        dp.reason,
+        u.uploaded_by,
+        u.upload_date,
+        u.tag_string
+    FROM destroyed_posts dp
+    LEFT JOIN uploads u 
+        ON u.id = dp.post_id
+    ORDER BY dp.created_at DESC
 ";
 
-$stmt = $db->prepare($sql);
-$stmt->execute();
-$result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) {
+$stmtDeleted = $db->prepare($sqlDeleted);
+$stmtDeleted->execute();
+$resultDeleted = $stmtDeleted->get_result();
+
+while ($row = $resultDeleted->fetch_assoc()) {
     $deleted_posts[] = $row;
 }
-$stmt->close();
+
+$stmtDeleted->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Deleted Posts – FluffFox</title>
+<title>Deleted Posts - FluffFox</title>
 <link rel="stylesheet" href="public/css/styles.css">
 
 <style>
@@ -72,32 +91,38 @@ body.dark th {
     <th>Post</th>
     <th>Poster</th>
     <th>Tags</th>
+    <th>Deleted At</th>
+    <th>Reason</th>
 </tr>
 </thead>
 
 <tbody>
 <?php if (empty($deleted_posts)): ?>
 <tr>
-    <td colspan="3" class="muted">No deleted posts found.</td>
+    <td colspan="5" class="muted">No deleted posts found.</td>
 </tr>
 <?php endif; ?>
 
 <?php foreach ($deleted_posts as $post): ?>
 <tr>
     <td>
-        <strong>#<?= $post['id'] ?></strong><br>
-        <?= htmlspecialchars($post['display_name']) ?><br>
-        <span class="muted"><?= strtoupper($post['category']) ?></span>
+        <strong><?= $post['post_id'] ?></strong><br>
     </td>
 
     <td>
-        User #<?= $post['uploaded_by'] ?><br>
-        <span class="muted"><?= $post['upload_date'] ?></span>
+        <?= htmlspecialchars($usernames[$post['uploaded_by']] ?? 'Unknown User') ?>
     </td>
 
     <td>
-        <?= htmlspecialchars($post['tag_string']) ?><br>
-        <span class="muted"><?= $post['tag_count'] ?> tags</span>
+        <?= htmlspecialchars($post['tag_string'] ?? '') ?>
+    </td>
+
+    <td>
+        <?= htmlspecialchars($post['deleted_at']) ?>
+    </td>
+
+    <td>
+        <?= htmlspecialchars($post['reason'] ?? 'No reason provided') ?>
     </td>
 </tr>
 <?php endforeach; ?>
